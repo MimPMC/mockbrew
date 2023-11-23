@@ -1,46 +1,24 @@
 /* eslint-disable react/no-unescaped-entities */
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import './App.css';
+import { AppBar, Container, Typography } from '@mui/material';
+import { useDrinkList } from './Context';
+import TransitionGroupExample from './List';
 
 function App() {
 
-   const [drinks, setDrinks] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          'https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Non_Alcoholic'
-        );
-
-        setDrinks(response.data.drinks);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+  const { drinkList } = useDrinkList();
 
   return (
-    <div>
-      <header>
-        <h1> Mark's To-drink list</h1>
-      </header>
-      <main>
-         <ul>
-        {drinks.map((drink) => (
-          <li key={drink.idDrink} className='list-item'>
-            <img src={drink.strDrinkThumb} alt={drink.strDrink} className='drink-img'/>
-            {drink.strDrink}
-            </li>
-        ))}
-      </ul>
-      </main>
-    </div>
-  )
+    <Container maxWidth="sm">
+      <AppBar>
+        <Container maxWidth="sm">
+          <Typography textAlign='center' variant="h3">Mark's To-drink list</Typography>
+        </Container>
+      </AppBar>
+      <Container maxWidth="sm" sx={{ mt: 10 }}>
+          <TransitionGroupExample drinks={drinkList}/>
+      </Container>
+    </Container>
+  );
 }
 
-export default App
+export default App;
